@@ -99,6 +99,7 @@ export default function SidePanel({ onUserSelected }) {
   const userSelectHandler = () => {
     onSelect(user);
   };
+  let data;
 
   return (
     <div className="flex h-screen bg-gray-100">
@@ -110,7 +111,7 @@ export default function SidePanel({ onUserSelected }) {
           <Search onSearch={searchHandler} />
         </div>
         <div className="flex-1 overflow-y-auto">
-          {users.map((user) => (
+          {(searching ? searchedUsers : users).map((user) => (
             <div key={user.id} className="p-4 hover:bg-gray-50 cursor-pointer">
               <div className="flex items-center">
                 <div className="flex-shrink-0">
