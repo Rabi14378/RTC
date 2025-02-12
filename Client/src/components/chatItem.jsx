@@ -1,6 +1,6 @@
-export default function ChatItem({ user }) {
+export default function ChatItem({ user, onClick }) {
   return (
-    <div key={user.id} className="p-4 hover:bg-gray-50 cursor-pointer">
+    <div className="p-4 hover:bg-gray-50 cursor-pointer" onClick={onClick}>
       <div className="flex items-center">
         <div className="flex-shrink-0">
           <img

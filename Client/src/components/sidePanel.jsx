@@ -100,7 +100,10 @@ export default function SidePanel({ onUserSelected }) {
   const userSelectHandler = () => {
     onSelect(user);
   };
-  let data;
+
+  const chatItemClickHandler = (clickedUser) => {
+    console.log("Clicked user:", clickedUser);
+  };
 
   return (
     <div className="flex h-screen bg-gray-100">
@@ -114,12 +117,24 @@ export default function SidePanel({ onUserSelected }) {
         <div className="flex-1 overflow-y-auto">
           {searching ? (
             searchedUsers.length > 0 ? (
-              searchedUsers.map((user) => <ChatItem user={user} />)
+              searchedUsers.map((user) => (
+                <ChatItem
+                  key={user.id}
+                  user={user}
+                  onClick={() => chatItemClickHandler(user)}
+                />
+              ))
             ) : (
               searchQuery && <li>No results found</li>
             )
           ) : users.length > 0 ? (
-            users.map((user) => <ChatItem user={user} />)
+            users.map((user) => (
+              <ChatItem
+                key={user.id}
+                user={user}
+                onClick={() => chatItemClickHandler(user)}
+              />
+            ))
           ) : (
             <li>No Contact added!</li>
           )}
