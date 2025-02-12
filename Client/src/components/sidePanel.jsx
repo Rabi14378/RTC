@@ -1,6 +1,7 @@
 import { Input } from "./ui/input";
 import { useState } from "react";
 import Search from "./searchPanel";
+import ChatItem from "./chatItem";
 
 export default function SidePanel({ onUserSelected }) {
   const [users, setUsers] = useState([
@@ -90,10 +91,10 @@ export default function SidePanel({ onUserSelected }) {
   const [searching, setSearching] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
 
-  const searchHandler = (users, query, focused) => {
+  const searchHandler = (qUsers, query, focused) => {
     setSearching(focused);
     setSearchQuery(query);
-    setSearchedUsers((e) => [...e, users]);
+    setSearchedUsers(qUsers);
   };
 
   const userSelectHandler = () => {
@@ -113,52 +114,12 @@ export default function SidePanel({ onUserSelected }) {
         <div className="flex-1 overflow-y-auto">
           {searching ? (
             searchedUsers.length > 0 ? (
-              searchedUsers.map((user) => (
-                <div
-                  key={user.id}
-                  className="p-4 hover:bg-gray-50 cursor-pointer">
-                  <div className="flex items-center">
-                    <div className="flex-shrink-0">
-                      <img
-                        className="h-10 w-10 rounded-full"
-                        src="https://via.placeholder.com/150"
-                        alt="User Avatar"
-                      />
-                    </div>
-                    <div className="ml-3">
-                      <p className="text-sm font-medium text-gray-900">
-                        {user.name}
-                      </p>
-                      <p className="text-sm text-gray-500">Last message...</p>
-                    </div>
-                  </div>
-                </div>
-              ))
+              searchedUsers.map((user) => <ChatItem user={user} />)
             ) : (
-              query && <li>No results found</li>
+              searchQuery && <li>No results found</li>
             )
           ) : users.length > 0 ? (
-            users.map((user) => (
-              <div
-                key={user.id}
-                className="p-4 hover:bg-gray-50 cursor-pointer">
-                <div className="flex items-center">
-                  <div className="flex-shrink-0">
-                    <img
-                      className="h-10 w-10 rounded-full"
-                      src="https://via.placeholder.com/150"
-                      alt="User Avatar"
-                    />
-                  </div>
-                  <div className="ml-3">
-                    <p className="text-sm font-medium text-gray-900">
-                      {user.name}
-                    </p>
-                    <p className="text-sm text-gray-500">Last message...</p>
-                  </div>
-                </div>
-              </div>
-            ))
+            users.map((user) => <ChatItem user={user} />)
           ) : (
             <li>No Contact added!</li>
           )}
