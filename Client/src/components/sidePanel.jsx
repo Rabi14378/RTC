@@ -1,9 +1,8 @@
-import { Input } from "./ui/input";
 import { useState } from "react";
 import Search from "./searchPanel";
 import ChatItem from "./chatItem";
-
-export default function SidePanel({ onUserSelected }) {
+import { useNavigate } from "react-router-dom";
+export default function SidePanel() {
   const [users, setUsers] = useState([
     {
       id: 1,
@@ -90,6 +89,7 @@ export default function SidePanel({ onUserSelected }) {
   const [searchedUsers, setSearchedUsers] = useState([]);
   const [searching, setSearching] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const navigate = useNavigate();
 
   const searchHandler = (qUsers, query, focused) => {
     setSearching(focused);
@@ -97,12 +97,9 @@ export default function SidePanel({ onUserSelected }) {
     setSearchedUsers(qUsers);
   };
 
-  const userSelectHandler = () => {
-    onSelect(user);
-  };
-
-  const chatItemClickHandler = (clickedUser) => {
-    console.log("Clicked user:", clickedUser);
+  const chatItemClickHandler = (userId) => {
+    console.log("Clicked user:", userId);
+    navigate(`/chats/${userId}`);
   };
 
   return (
