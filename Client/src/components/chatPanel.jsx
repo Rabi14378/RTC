@@ -1,42 +1,42 @@
 import { useParams } from "react-router-dom";
 import { useState } from "react";
-const dummyMessages = [
-  {
-    id: "1",
-    content: "Hi Bob, how are you?",
-    createdAt: "2023-10-01T10:15:30Z",
-    conversationId: "12345",
-    sender: {
-      id: "user1",
-      name: "Rabi",
-      email: "alice@example.com",
-    },
-  },
-  {
-    id: "2",
-    content: "Hey Alice! I'm good, thanks. How about you?",
-    createdAt: "2023-10-01T10:16:45Z",
-    conversationId: "12345",
-    sender: {
-      id: "user2",
-      name: "Bob",
-      email: "bob@example.com",
-    },
-  },
-  {
-    id: "3",
-    content: "I'm doing great, thanks for asking!",
-    createdAt: "2023-10-01T10:17:20Z",
-    conversationId: "12345",
-    sender: {
-      id: "user1",
-      name: "Rabi",
-      email: "alice@example.com",
-    },
-  },
-];
+
 export default function ChatPanel() {
-  const [messages, setMessages] = useState(dummyMessages);
+  const [messages, setMessages] = useState([
+    {
+      id: "1",
+      content: "Hi Bob, how are you?",
+      createdAt: "2023-10-01T10:15:30Z",
+      conversationId: "12345",
+      sender: {
+        id: "user1",
+        name: "Rabi",
+        email: "alice@example.com",
+      },
+    },
+    {
+      id: "2",
+      content: "Hey Alice! I'm good, thanks. How about you?",
+      createdAt: "2023-10-01T10:16:45Z",
+      conversationId: "12345",
+      sender: {
+        id: "user2",
+        name: "Bob",
+        email: "bob@example.com",
+      },
+    },
+    {
+      id: "3",
+      content: "I'm doing great, thanks for asking!",
+      createdAt: "2023-10-01T10:17:20Z",
+      conversationId: "12345",
+      sender: {
+        id: "user1",
+        name: "Rabi",
+        email: "alice@example.com",
+      },
+    },
+  ]);
   const [newMessage, setNewMessage] = useState("");
   const { userId } = useParams();
 
@@ -54,9 +54,10 @@ export default function ChatPanel() {
         email: "alice@example.com",
       },
     };
-    setNewMessage((prev) => [...prev, message]);
+    setMessages([...messages, message]);
     setNewMessage("");
   };
+  console.log(messages);
 
   return (
     <div className="flex flex-col h-screen bg-gray-100 p-4">
@@ -92,6 +93,12 @@ export default function ChatPanel() {
             type="text"
             value={newMessage}
             onChange={(e) => setNewMessage(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                e.preventDefault();
+                handleSendMessage();
+              }
+            }}
             placeholder="Type a message..."
             className="flex-1 p-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
           />
