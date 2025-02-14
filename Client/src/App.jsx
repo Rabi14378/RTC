@@ -10,11 +10,13 @@ import ChatPanel from "./components/chatPanel";
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<Home />} />
+      <Route path="/" element={<Home />}>
+        <Route path="/chats/:userId" element={<Home />} />
+      </Route>
       <Route path="/signup" element={<SignUp />} />
       <Route path="/signin" element={<SignIn />} />
-      <Route path="/sidebar" element={<Sidebar />} />
-      <Route path="/chatpanel" element={<ChatPanel />} />
+      {/* <Route path="/sidebar" element={<Sidebar />} />
+      <Route path="/chatpanel" element={<ChatPanel />} /> */}
     </Routes>
   );
 }

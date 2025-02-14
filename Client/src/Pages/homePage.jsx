@@ -1,3 +1,11 @@
+import ChatPanel from "@/components/chatPanel";
+import SidePanel from "@/components/sidePanel";
+
 export default function Home() {
-  return <h1>This is the home page.</h1>;
+  return (
+    <div className="flex h-screen bg-gray-100">
+      <SidePanel />
+      <ChatPanel />
+    </div>
+  );
 }

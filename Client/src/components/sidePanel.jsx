@@ -103,7 +103,7 @@ export default function SidePanel() {
   };
 
   return (
-    <div className="flex h-screen bg-gray-100">
+    <>
       <div className="w-1/3 bg-white border-r border-gray-200 flex flex-col">
         <div className="p-4 border-b border-gray-200">
           <h2 className="text-xl font-semibold">Let's Chat</h2>
@@ -118,7 +118,7 @@ export default function SidePanel() {
                 <ChatItem
                   key={user.id}
                   user={user}
-                  onClick={() => chatItemClickHandler(user)}
+                  onClick={() => chatItemClickHandler(user.id)}
                 />
               ))
             ) : (
@@ -129,26 +129,15 @@ export default function SidePanel() {
               <ChatItem
                 key={user.id}
                 user={user}
-                onClick={() => chatItemClickHandler(user)}
+                onClick={() => chatItemClickHandler(user.id)}
               />
             ))
           ) : (
             <li>No Contact added!</li>
           )}
         </div>
-
-        <div className="p-4 border-t border-gray-200">
-          <button className="w-full px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
-            New Message
-          </button>
-        </div>
       </div>
-
-      <div className="flex-1 p-8">
-        <h1 className="text-2xl font-bold">Welcome to Messenger</h1>
-        <p className="text-gray-600">Select a chat to start messaging.</p>
-      </div>
-    </div>
+    </>
   );
 }
 
