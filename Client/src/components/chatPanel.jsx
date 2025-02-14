@@ -68,7 +68,7 @@ export default function ChatPanel() {
   };
 
   return (
-    <div className="flex flex-col h-screen bg-gray-100 p-4">
+    <div className="flex flex-col h-screen w-2/3 bg-gray-100 p-4">
       {!userId ? (
         <h4>select the user to chat with him/her</h4>
       ) : (
