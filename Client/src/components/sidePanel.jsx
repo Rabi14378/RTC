@@ -120,7 +120,8 @@ export default function SidePanel() {
                 <ChatItem
                   key={user.id}
                   user={user}
-                  isSelected={user.id === selectedChat}
+                  searched={true}
+                  isSelected={false}
                   onClick={() => chatItemClickHandler(user.id)}
                 />
               ))
@@ -133,6 +134,7 @@ export default function SidePanel() {
                 key={user.id}
                 user={user}
                 isSelected={user.id === selectedChat}
+                searched={false}
                 onClick={() => chatItemClickHandler(user.id)}
               />
             ))

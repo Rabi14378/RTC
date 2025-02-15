@@ -45,8 +45,6 @@ export default function ChatPanel() {
     const thisConversation = dummyChats.filter(
       (chat) => chat.conversationId === userId
     );
-    console.log("hehelol");
-
     setMessages(thisConversation);
   }, [userId]);
 
