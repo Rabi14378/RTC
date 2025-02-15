@@ -1,11 +1,16 @@
-export default function ChatItem({ user, onClick }) {
+import zoroAvatar from "../assets/images/zoro11.jpg";
+export default function ChatItem({ user, onClick, isSelected }) {
   return (
-    <div className="p-4 hover:bg-gray-50 cursor-pointer" onClick={onClick}>
+    <div
+      className={`p-4 hover:bg-gray-50 cursor-pointer ${
+        isSelected && "bg-blue-50"
+      }`}
+      onClick={onClick}>
       <div className="flex items-center">
         <div className="flex-shrink-0">
           <img
             className="h-10 w-10 rounded-full"
-            src="https://via.placeholder.com/150"
+            src={zoroAvatar}
             alt="User Avatar"
           />
         </div>

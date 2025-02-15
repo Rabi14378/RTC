@@ -89,6 +89,7 @@ export default function SidePanel() {
   const [searchedUsers, setSearchedUsers] = useState([]);
   const [searching, setSearching] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [selectedChat, setSelectedChat] = useState(null);
   const navigate = useNavigate();
 
   const searchHandler = (qUsers, query, focused) => {
@@ -98,6 +99,7 @@ export default function SidePanel() {
   };
 
   const chatItemClickHandler = (userId) => {
+    setSelectedChat(userId);
     console.log("Clicked user:", userId);
     navigate(`/chats/${userId}`);
   };
@@ -118,6 +120,7 @@ export default function SidePanel() {
                 <ChatItem
                   key={user.id}
                   user={user}
+                  isSelected={user.id === selectedChat}
                   onClick={() => chatItemClickHandler(user.id)}
                 />
               ))
@@ -129,6 +132,7 @@ export default function SidePanel() {
               <ChatItem
                 key={user.id}
                 user={user}
+                isSelected={user.id === selectedChat}
                 onClick={() => chatItemClickHandler(user.id)}
               />
             ))
