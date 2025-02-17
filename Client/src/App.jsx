@@ -9,7 +9,7 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<ChatPage />}>
-        <Route path="/chats/:userId" element={<ChatPage />} />
+        <Route path="/chats/:chatId" element={<ChatPage />} />
       </Route>
       <Route path="/signup" element={<SignUp />} />
       <Route path="/signin" element={<SignIn />} />

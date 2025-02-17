@@ -25,7 +25,7 @@ export default function SidePanel({ chatList }) {
   const sortedChatList = [...chatList].sort((a, b) => {
     const latestMessageA = a.messages[0].createdAt;
     const latestMessageB = b.messages[0].createdAt;
-    return new Date(latestMessageA) - new Date(latestMessageB);
+    return new Date(latestMessageB) - new Date(latestMessageA);
   });
 
   return (
@@ -59,7 +59,7 @@ export default function SidePanel({ chatList }) {
               <ChatItem
                 key={chat.id}
                 user={chat.participants[0].user}
-                lastMessage={chat.messages[0].content}
+                lastMessage={chat.messages[0]?.content || "no messages"}
                 isSelected={chat.id === selectedChat}
                 searched={false}
                 onClick={() => chatItemClickHandler(chat.id)}

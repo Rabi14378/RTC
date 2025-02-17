@@ -1,73 +1,238 @@
 import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 const dummyChats = [
   {
-    id: "1",
-    content: "Hi Bob, how are you?",
-    createdAt: "2023-10-01T10:15:30Z",
-    conversationId: "1",
-    sender: {
-      id: "user1",
-      name: "Rabi",
-      email: "alice@example.com",
-    },
+    id: 1,
+    content: "Hey Bob, how are you?",
+    senderId: 1,
+    conversationId: 1,
+    createdAt: "2023-10-01T08:00:00Z",
+    updatedAt: "2023-10-01T08:00:00Z",
   },
   {
-    id: "2",
-    content: "Hey Alice! I'm good, thanks. How about you?",
-    createdAt: "2023-10-01T10:16:45Z",
-    conversationId: "1",
-    sender: {
-      id: "1",
-      name: "Bob",
-      email: "bob@example.com",
-    },
+    id: 2,
+    content: "I'm good, Alice! How about you?",
+    senderId: 2,
+    conversationId: 1,
+    createdAt: "2023-10-01T08:05:00Z",
+    updatedAt: "2023-10-01T08:05:00Z",
   },
   {
-    id: "3",
+    id: 3,
     content: "I'm doing great, thanks for asking!",
-    createdAt: "2023-10-01T10:17:20Z",
-    conversationId: "1",
-    sender: {
-      id: "user1",
-      name: "Rabi",
-      email: "alice@example.com",
-    },
+    senderId: 1,
+    conversationId: 1,
+    createdAt: "2023-10-01T08:10:00Z",
+    updatedAt: "2023-10-01T08:10:00Z",
+  },
+  {
+    id: 4,
+    content: "Want to grab lunch later?",
+    senderId: 1,
+    conversationId: 1,
+    createdAt: "2023-10-01T08:15:00Z",
+    updatedAt: "2023-10-01T08:15:00Z",
+  },
+  {
+    id: 5,
+    content: "Sure, what time?",
+    senderId: 2,
+    conversationId: 1,
+    createdAt: "2023-10-01T08:20:00Z",
+    updatedAt: "2023-10-01T08:20:00Z",
+  },
+  {
+    id: 6,
+    content: "Hey Charlie, are you free tomorrow?",
+    senderId: 1,
+    conversationId: 2,
+    createdAt: "2023-10-02T09:00:00Z",
+    updatedAt: "2023-10-02T09:00:00Z",
+  },
+  {
+    id: 7,
+    content: "Yes, I am. What's up?",
+    senderId: 3,
+    conversationId: 2,
+    createdAt: "2023-10-02T09:05:00Z",
+    updatedAt: "2023-10-02T09:05:00Z",
+  },
+  {
+    id: 8,
+    content: "Let's meet for coffee.",
+    senderId: 1,
+    conversationId: 2,
+    createdAt: "2023-10-02T09:10:00Z",
+    updatedAt: "2023-10-02T09:10:00Z",
+  },
+  {
+    id: 9,
+    content: "Sounds good! What time?",
+    senderId: 3,
+    conversationId: 2,
+    createdAt: "2023-10-02T09:15:00Z",
+    updatedAt: "2023-10-02T09:15:00Z",
+  },
+  {
+    id: 10,
+    content: "How about 3 PM?",
+    senderId: 1,
+    conversationId: 2,
+    createdAt: "2023-10-02T09:20:00Z",
+    updatedAt: "2023-10-02T09:20:00Z",
+  },
+  {
+    id: 11,
+    content: "Hey Diana, can you send me the report?",
+    senderId: 1,
+    conversationId: 3,
+    createdAt: "2023-10-03T10:00:00Z",
+    updatedAt: "2023-10-03T10:00:00Z",
+  },
+  {
+    id: 12,
+    content: "Sure, I'll send it in a few minutes.",
+    senderId: 4,
+    conversationId: 3,
+    createdAt: "2023-10-03T10:05:00Z",
+    updatedAt: "2023-10-03T10:05:00Z",
+  },
+  {
+    id: 13,
+    content: "Thanks, Diana!",
+    senderId: 1,
+    conversationId: 3,
+    createdAt: "2023-10-03T10:10:00Z",
+    updatedAt: "2023-10-03T10:10:00Z",
+  },
+  {
+    id: 14,
+    content: "No problem! Let me know if you need anything else.",
+    senderId: 4,
+    conversationId: 3,
+    createdAt: "2023-10-03T10:15:00Z",
+    updatedAt: "2023-10-03T10:15:00Z",
+  },
+  {
+    id: 15,
+    content: "Hey Eve, did you finish the presentation?",
+    senderId: 1,
+    conversationId: 4,
+    createdAt: "2023-10-04T11:00:00Z",
+    updatedAt: "2023-10-04T11:00:00Z",
+  },
+  {
+    id: 16,
+    content: "Almost done. I'll send it to you soon.",
+    senderId: 5,
+    conversationId: 4,
+    createdAt: "2023-10-04T11:05:00Z",
+    updatedAt: "2023-10-04T11:05:00Z",
+  },
+  {
+    id: 17,
+    content: "Great, thanks!",
+    senderId: 1,
+    conversationId: 4,
+    createdAt: "2023-10-04T11:10:00Z",
+    updatedAt: "2023-10-04T11:10:00Z",
+  },
+  {
+    id: 18,
+    content: "No worries! It'll be ready in 10 minutes.",
+    senderId: 5,
+    conversationId: 4,
+    createdAt: "2023-10-04T11:15:00Z",
+    updatedAt: "2023-10-04T11:15:00Z",
+  },
+  {
+    id: 19,
+    content: "Hey Frank, can you review this document?",
+    senderId: 1,
+    conversationId: 5,
+    createdAt: "2023-10-05T12:00:00Z",
+    updatedAt: "2023-10-05T12:00:00Z",
+  },
+  {
+    id: 20,
+    content: "Sure, send it over.",
+    senderId: 6,
+    conversationId: 5,
+    createdAt: "2023-10-05T12:05:00Z",
+    updatedAt: "2023-10-05T12:05:00Z",
+  },
+  {
+    id: 21,
+    content: "Thanks, Frank!",
+    senderId: 1,
+    conversationId: 5,
+    createdAt: "2023-10-05T12:10:00Z",
+    updatedAt: "2023-10-05T12:10:00Z",
+  },
+  {
+    id: 22,
+    content: "No problem. I'll get back to you by EOD.",
+    senderId: 6,
+    conversationId: 5,
+    createdAt: "2023-10-05T12:15:00Z",
+    updatedAt: "2023-10-05T12:15:00Z",
   },
 ];
-export default function ChatPanel() {
+const userId = 1;
+export default function ChatPanel({ setChats }) {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
-  const { userId } = useParams();
+  const { chatId } = useParams();
+  const messagesEndRef = useRef(null);
 
   useEffect(() => {
+    if (!chatId) return;
+
     const thisConversation = dummyChats.filter(
-      (chat) => chat.conversationId === userId
+      (chat) => chat.conversationId == chatId
     );
+
     setMessages(thisConversation);
-  }, [userId]);
+  }, [chatId]);
 
   const handleSendMessage = () => {
     if (newMessage.trim() === "") return;
     const message = {
-      id: String(messages.length + 1),
+      id: String(messages.length + newMessage.length),
       content: newMessage,
       createdAt: new Date().toISOString(),
       conversationId: "12345",
-      sender: {
-        id: "user1",
-        name: "Rabi",
-        email: "alice@example.com",
-      },
+      senderId: userId,
     };
     setMessages([...messages, message]);
+    setChats((prevChats) =>
+      prevChats.map((chat) =>
+        chat.id == chatId
+          ? {
+              ...chat,
+              messages: chat.messages.map((msg, index) =>
+                index === 0
+                  ? {
+                      ...msg,
+                      content: message.content,
+                      createdAt: new Date().toISOString(),
+                    }
+                  : msg
+              ),
+            }
+          : chat
+      )
+    );
     setNewMessage("");
   };
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
   return (
     <div className="flex flex-col h-screen w-2/3 bg-gray-100 p-4">
-      {!userId ? (
+      {!chatId ? (
         <h4>select the user to chat with him/her</h4>
       ) : (
         <>
@@ -76,17 +241,15 @@ export default function ChatPanel() {
           </div>
 
           <div className="flex-1 overflow-y-auto p-4 bg-white mt-2 rounded-b-lg">
-            {messages.map((message) => (
+            {messages?.map((message) => (
               <div
                 key={message.id}
                 className={`flex ${
-                  message.sender.id === "user1"
-                    ? "justify-end"
-                    : "justify-start"
+                  message.senderId == userId ? "justify-end" : "justify-start"
                 } mb-4`}>
                 <div
                   className={`max-w-[70%] p-3 rounded-lg ${
-                    message.sender.id === "user1"
+                    message.senderId == userId
                       ? "bg-blue-500 text-white"
                       : "bg-gray-200 text-gray-800"
                   }`}>
@@ -97,6 +260,7 @@ export default function ChatPanel() {
                 </div>
               </div>
             ))}
+            <div ref={messagesEndRef} />
           </div>
 
           <div className="bg-white p-4 shadow-md rounded-lg mt-2">
