@@ -2,7 +2,7 @@ import { useState } from "react";
 import Search from "./searchPanel";
 import ChatItem from "./chatItem";
 import { useNavigate } from "react-router-dom";
-export default function SidePanel() {
+export default function SidePanel({ chatList }) {
   // const [selectedUser, setSelectedUser] = useState(null);
   const [searchedUsers, setSearchedUsers] = useState([]);
   const [searching, setSearching] = useState(false);
@@ -16,11 +16,17 @@ export default function SidePanel() {
     setSearchedUsers(qUsers);
   };
 
-  const chatItemClickHandler = (userId) => {
-    setSelectedChat(userId);
-    console.log("Clicked user:", userId);
-    navigate(`/chats/${userId}`);
+  const chatItemClickHandler = (chatId) => {
+    setSelectedChat(chatId);
+    console.log("Clicked user:", chatId);
+    navigate(`/chats/${chatId}`);
   };
+
+  const sortedChatList = [...chatList].sort((a, b) => {
+    const latestMessageA = a.messages[0].createdAt;
+    const latestMessageB = b.messages[0].createdAt;
+    return new Date(latestMessageA) - new Date(latestMessageB);
+  });
 
   return (
     <>
@@ -41,19 +47,22 @@ export default function SidePanel() {
                   searched={true}
                   isSelected={false}
                   onClick={() => chatItemClickHandler(user.id)}
+
+                  //todo: maybe make searchItemClickHandler and handler the new conversation on another route maybe!!
                 />
               ))
             ) : (
               searchQuery && <li>No results found</li>
             )
-          ) : users.length > 0 ? (
-            users.map((user) => (
+          ) : sortedChatList.length > 0 ? (
+            sortedChatList.map((chat) => (
               <ChatItem
-                key={user.id}
-                user={user}
-                isSelected={user.id === selectedChat}
+                key={chat.id}
+                user={chat.participants[0].user}
+                lastMessage={chat.messages[0].content}
+                isSelected={chat.id === selectedChat}
                 searched={false}
-                onClick={() => chatItemClickHandler(user.id)}
+                onClick={() => chatItemClickHandler(chat.id)}
               />
             ))
           ) : (

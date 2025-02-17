@@ -3,15 +3,13 @@ import viteLogo from "/vite.svg";
 import { Routes, Route } from "react-router-dom";
 import SignUp from "./Pages/signUp";
 import SignIn from "./Pages/signIn";
-import Home from "./Pages/homePage";
-import Sidebar from "./components/sidePanel";
-import ChatPanel from "./components/chatPanel";
+import ChatPage from "./Pages/chatPage";
 
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<Home />}>
-        <Route path="/chats/:userId" element={<Home />} />
+      <Route path="/" element={<ChatPage />}>
+        <Route path="/chats/:userId" element={<ChatPage />} />
       </Route>
       <Route path="/signup" element={<SignUp />} />
       <Route path="/signin" element={<SignIn />} />

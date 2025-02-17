@@ -1,5 +1,11 @@
 import zoroAvatar from "../assets/images/zoro11.jpg";
-export default function ChatItem({ user, onClick, isSelected, searched }) {
+export default function ChatItem({
+  user,
+  onClick,
+  isSelected,
+  searched,
+  lastMessage,
+}) {
   return (
     <div
       className={`p-4 hover:bg-gray-50 cursor-pointer ${
@@ -16,9 +22,7 @@ export default function ChatItem({ user, onClick, isSelected, searched }) {
         </div>
         <div className="ml-3">
           <p className="text-sm font-medium text-gray-900">{user.name}</p>
-          {!searched && (
-            <p className="text-sm text-gray-500">Last message...</p>
-          )}
+          {!searched && <p className="text-sm text-gray-500">{lastMessage}</p>}
         </div>
       </div>
     </div>
