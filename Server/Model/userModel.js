@@ -25,6 +25,7 @@ const userSchema = mongoose.Schema({
     enum: ["online", "offline"],
     default: "offline",
   },
+  isVerified: { type: Boolean, default: false },
   lastSeen: { type: Date, default: Date.now },
 });
 
