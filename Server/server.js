@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
 import { errorHandler } from "./middleWares/errorHandler";
+import authRoute from "./Routes/authRoute";
 dotenv.config();
 const app = express();
 app.use(express.json());
@@ -25,6 +26,8 @@ app.use((req, res, next) => {
 app.get("/", (req, res) => {
   res.send("<h1>Hello world<h1>");
 });
+
+app.use("/api/auth", authRoute);
 
 app.use(errorHandler);
 const PORT = process.env.PORT || 5000;
