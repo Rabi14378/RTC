@@ -1,45 +1,41 @@
 import { User } from "../Model/userModel";
 import { Token } from "../Model/tokenModel";
 import { randomBytes, createHash } from "crypto";
+import asyncHandler from "express-async-handler";
+import { sendMail } from "../Utils/mailUtils";
+import { verificationEmailTemplate } from "../Utils/mailTemplates";
 
-export const Registration = async (req, res) => {
+export const Registration = asyncHandler(async (req, res) => {
   const { firstName, lastName, email, password } = req.body;
   if (!firstName || !lastName || !email || !password)
     throw new Error("all field should be filled");
   if (password.length < 8)
     throw new Error("password should be atleast 8 leter");
 
-  try {
-    const isRegistered = await User.findOne({ email });
-    if (isRegistered) {
-      res.status(409);
-      throw new Error("Email already exists!");
-    }
-  } catch (error) {
-    throw new Error(error);
+  const isRegistered = await User.findOne({ email });
+  if (isRegistered) {
+    res.status(409);
+    throw new Error("Email already exists!");
   }
 
-  try {
-    const user = await User.create({
-      name: firstName + " " + lastName,
-      email,
-      password,
-    });
-    if (user) {
-      const verifyToken = randomBytes(32).toString("hex") + user._id;
-      const hashedToken = createHash("sha256")
-        .update(verifyToken)
-        .digest("hex");
-      try {
-        await Token.create({
-          userId: user._id,
-          token: hashedToken,
-        });
-      } catch (error) {
-        throw new Error("could not add token to database");
-      }
-    }
-  } catch (error) {
-    throw new Error("sorry could not add user to database");
-  }
-};
+  const user = await User.create({
+    name: firstName + " " + lastName,
+    email,
+    password,
+  });
+  if (!user) throw new Error("could not add user to database");
+  const verifyToken = randomBytes(32).toString("hex") + user._id;
+  const hashedToken = createHash("sha256").update(verifyToken).digest("hex");
+  const token = await Token.create({
+    userId: user._id,
+    token: hashedToken,
+  });
+  if (!token) throw new Error("could not add token to db");
+
+  const mailContent = {
+    subject: "Email Verification",
+    message: verificationEmailTemplate(token, process.env.CLIENT_URL),
+  };
+  const mailResponse = await sendMail(user.email, mailContent);
+  res.status(200).json({ msg: "user created succesfully!" });
+});
