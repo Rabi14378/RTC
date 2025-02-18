@@ -28,7 +28,7 @@ export const verificationEmailTemplate = (token, clientUrl) => {
     `;
 };
 
-export const resetEmailTemplate = (clientUrl, token) => {
+export const resetEmailTemplate = (token, clientUrl) => {
   const currentYear = new Date().getFullYear();
   return `
   <!DOCTYPE html>
