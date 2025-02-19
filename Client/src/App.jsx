@@ -1,9 +1,8 @@
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
 import { Routes, Route } from "react-router-dom";
 import SignUp from "./Pages/signUp";
 import SignIn from "./Pages/signIn";
 import ChatPage from "./Pages/chatPage";
+import VerifyEmail from "./Pages/verificationPage";
 
 function App() {
   return (
@@ -13,8 +12,8 @@ function App() {
       </Route>
       <Route path="/signup" element={<SignUp />} />
       <Route path="/signin" element={<SignIn />} />
-      {/* <Route path="/sidebar" element={<Sidebar />} />
-      <Route path="/chatpanel" element={<ChatPanel />} /> */}
+      <Route path="/auth/verify/:verificationToken" element={<VerifyEmail />} />
+      {/* <Route path="/chatpanel" element={<ChatPanel />} /> */}
     </Routes>
   );
 }
