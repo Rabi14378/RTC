@@ -39,3 +39,10 @@ export const Registration = asyncHandler(async (req, res) => {
   const mailResponse = await sendMail(user.email, mailContent);
   res.status(200).json({ msg: "user created succesfully!" });
 });
+
+export const verifyToken = asyncHandler(async (req, res) => {
+  const { verificationToken } = req.params;
+  //todo:check if token is in the database and also check if has expired
+  //todo:if expired send expired message to frontend and from front end make a request to send another verification token
+  //todo: if token in available and not expired verify the user and and also add the cookie
+});
