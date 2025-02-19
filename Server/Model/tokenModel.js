@@ -1,4 +1,4 @@
-import { Schema, Model } from "mongoose";
+import { Schema, model } from "mongoose";
 
 const tokenSchema = Schema(
   {
@@ -19,4 +19,4 @@ const tokenSchema = Schema(
   { timestamps: true }
 );
 
-export const Token = Model("Token", tokenSchema);
+export const Token = model("Token", tokenSchema);

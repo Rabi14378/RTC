@@ -1,9 +1,9 @@
-import { User } from "../Model/userModel";
-import { Token } from "../Model/tokenModel";
+import { User } from "../Model/userModel.js";
+import { Token } from "../Model/tokenModel.js";
 import { randomBytes, createHash } from "crypto";
 import asyncHandler from "express-async-handler";
-import { sendMail } from "../Utils/mailUtils";
-import { verificationEmailTemplate } from "../Utils/mailTemplates";
+import { sendMail } from "../Utils/mailUtils.js";
+import { verificationEmailTemplate } from "../Utils/mailTemplates.js";
 
 export const Registration = asyncHandler(async (req, res) => {
   const { firstName, lastName, email, password } = req.body;
