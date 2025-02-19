@@ -13,7 +13,7 @@ export const verificationEmailTemplate = (token, clientUrl) => {
             <p style="color: #555;">
                 Please verify your account by clicking on the button below.
             </p>
-            <a href="${clientUrl}/api/auth/verify/${token}" style="display: inline-block; padding: 10px 20px; font-size: 16px; color: #fff; background-color: #28a745; text-decoration: none; border-radius: 5px; margin-top: 20px;">
+            <a href="${clientUrl}/auth/verify/${token}" style="display: inline-block; padding: 10px 20px; font-size: 16px; color: #fff; background-color: #28a745; text-decoration: none; border-radius: 5px; margin-top: 20px;">
                 Verify Account
             </a>
             <p style="color: #555; margin-top: 20px;">
