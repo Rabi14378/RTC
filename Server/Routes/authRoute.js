@@ -1,8 +1,15 @@
 import { Router } from "express";
-import { Registration, verifyToken } from "../Controller/userController.js";
+import {
+  login,
+  logout,
+  Registration,
+  verifyToken,
+} from "../Controller/userController.js";
 
 const router = Router();
-router.get("/register", Registration);
+router.post("/register", Registration);
 router.post("/verify/:verificationToken", verifyToken);
+router.post("/login", login);
+router.post("/logout", logout);
 
 export default router;

@@ -27,6 +27,8 @@ export const Registration = asyncHandler(async (req, res) => {
   });
   if (!user) throw new Error("could not add user to database");
   const verifyToken = randomBytes(32).toString("hex") + user._id;
+  console.log(verifyToken);
+
   const hashedToken = createHash("sha256").update(verifyToken).digest("hex");
   const token = await Token.create({
     userId: user._id,
@@ -78,7 +80,8 @@ export const login = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error("email or password is incorrect");
   }
-  const passwordIsCorrect = bcrypt.compare(password, user.password);
+  const passwordIsCorrect = await bcrypt.compare(password, user.password);
+
   if (!passwordIsCorrect) {
     res.status(400);
     throw new Error("Either email or password is incorrect");
@@ -93,7 +96,7 @@ export const login = asyncHandler(async (req, res) => {
     path: "/",
     httpOnly: true,
     expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-    sameSite: none,
+    sameSite: "none",
     secure: true,
     domain: "localhost",
   });

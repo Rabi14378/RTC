@@ -20,7 +20,7 @@ export const verificationEmailTemplate = (token, clientUrl) => {
                 If you did not request this, please ignore this email.
             </p>
             <p style="color: #777; font-size: 12px; margin-top: 20px;">
-                &copy; ${currentYear} Your Company Name. All rights reserved.
+                &copy; ${currentYear} RTC. All rights reserved.
             </p>
         </div>
     </body>
@@ -50,7 +50,7 @@ export const resetEmailTemplate = (token, clientUrl) => {
               If you did not request a password reset, please ignore this email or contact support if you have questions.
           </p>
           <p style="color: #777; font-size: 12px; margin-top: 20px;">
-              &copy; ${currentYear} Your Company Name. All rights reserved.
+              &copy; ${currentYear} RTC. All rights reserved.
           </p>
       </div>
   </body>
