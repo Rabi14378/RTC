@@ -5,7 +5,7 @@ import asyncHandler from "express-async-handler";
 import bcrypt from "bcryptjs";
 import { sendMail } from "../Utils/mailUtils.js";
 import { verificationEmailTemplate } from "../Utils/mailTemplates.js";
-import { generateToken } from "../Utils/jwtToken.js";
+import { generateToken, verifyJwtToken } from "../Utils/jwtToken.js";
 
 export const Registration = asyncHandler(async (req, res) => {
   const { firstName, lastName, email, password } = req.body;
@@ -27,9 +27,10 @@ export const Registration = asyncHandler(async (req, res) => {
   });
   if (!user) throw new Error("could not add user to database");
   const verifyToken = randomBytes(32).toString("hex") + user._id;
-  console.log(verifyToken);
 
   const hashedToken = createHash("sha256").update(verifyToken).digest("hex");
+  console.log(hashedToken);
+
   const token = await Token.create({
     userId: user._id,
     token: hashedToken,
@@ -106,4 +107,23 @@ export const login = asyncHandler(async (req, res) => {
 export const logout = asyncHandler(async (req, res) => {
   res.clearCookie("token");
   res.status(200).json({ msg: "succesfully logged out" });
+});
+
+export const getUser = asyncHandler(async (req, res) => {
+  const token = await req.cookies.token;
+  if (!token) {
+    res.status(404);
+    throw new Error("token unavailable");
+  }
+  const isVerified = await verifyJwtToken(token);
+  if (!isVerified) {
+    res.status(400);
+    throw new Error("could not verify token");
+  }
+  const user = await User.findById({ _id: isVerified.id }).select("-password");
+  if (!user) {
+    res.status(404);
+    throw new Error("no user");
+  }
+  res.status(200).json(user);
 });
