@@ -2,8 +2,10 @@ import { User } from "../Model/userModel.js";
 import { Token } from "../Model/tokenModel.js";
 import { randomBytes, createHash } from "crypto";
 import asyncHandler from "express-async-handler";
+import bcrypt from "bcryptjs";
 import { sendMail } from "../Utils/mailUtils.js";
 import { verificationEmailTemplate } from "../Utils/mailTemplates.js";
+import { generateToken } from "../Utils/jwtToken.js";
 
 export const Registration = asyncHandler(async (req, res) => {
   const { firstName, lastName, email, password } = req.body;
@@ -43,7 +45,7 @@ export const Registration = asyncHandler(async (req, res) => {
 export const verifyToken = asyncHandler(async (req, res) => {
   const { verificationToken } = req.params;
   const token = await Token.findOne({ token: verificationToken });
-  if (!token) {
+  if (!token || token.category !== "verification") {
     res.status(404);
     throw new Error("Could not find the token");
   }
@@ -63,4 +65,42 @@ export const verifyToken = asyncHandler(async (req, res) => {
   res.status(200).json({ msg: "user successfully verified!" });
 
   //todo:maybe implement a transaction here!!
+});
+
+export const login = asyncHandler(async (req, res) => {
+  const { email, password } = req.body;
+  if (!email || !password) {
+    res.status(400);
+    throw new Error("field cannot be empty");
+  }
+  const user = await User.findOne({ email });
+  if (!user) {
+    res.status(400);
+    throw new Error("email or password is incorrect");
+  }
+  const passwordIsCorrect = bcrypt.compare(password, user.password);
+  if (!passwordIsCorrect) {
+    res.status(400);
+    throw new Error("Either email or password is incorrect");
+  }
+
+  if (!user.isVerified) {
+    res.status(401);
+    throw new Error("unverified user");
+  }
+  const token = generateToken(user._id);
+  res.cookie("token", token, {
+    path: "/",
+    httpOnly: true,
+    expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+    sameSite: none,
+    secure: true,
+    domain: "localhost",
+  });
+  res.status(200).json(user);
+});
+
+export const logout = asyncHandler(async (req, res) => {
+  res.clearCookie("token");
+  res.status(200).json({ msg: "succesfully logged out" });
 });

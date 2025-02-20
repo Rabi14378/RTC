@@ -11,6 +11,11 @@ const tokenSchema = Schema(
       type: String,
       required: true,
     },
+    category: {
+      type: String,
+      enum: ["verification", "passwordReset"],
+      default: "verification",
+    },
     expiresAt: {
       type: Date,
       default: Date.now() + 7 * 24 * 60 * 60 * 1000,
