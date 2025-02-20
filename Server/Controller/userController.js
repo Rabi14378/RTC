@@ -42,7 +42,25 @@ export const Registration = asyncHandler(async (req, res) => {
 
 export const verifyToken = asyncHandler(async (req, res) => {
   const { verificationToken } = req.params;
-  //todo:check if token is in the database and also check if has expired
-  //todo:if expired send expired message to frontend and from front end make a request to send another verification token
-  //todo: if token in available and not expired verify the user and and also add the cookie
+  const token = await Token.findOne({ token: verificationToken });
+  if (!token) {
+    res.status(404);
+    throw new Error("Could not find the token");
+  }
+
+  if (token.expiresAt < Date.now()) {
+    const deletedToken = await Token.deleteOne({ _id: token._id });
+    if (!deletedToken) throw new Error("could not delete expired token");
+    res.status(410).json({ msg: "Token has expired" });
+  }
+
+  const user = await User.updateOne(
+    { _id: token.userId },
+    { isVerified: true }
+  );
+  if (!user) throw new Error("could not update user database");
+  const actualToken = await Token.deleteOne({ _id: token._id });
+  res.status(200).json({ msg: "user successfully verified!" });
+
+  //todo:maybe implement a transaction here!!
 });
