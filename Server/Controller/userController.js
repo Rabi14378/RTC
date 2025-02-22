@@ -72,6 +72,8 @@ export const verifyToken = asyncHandler(async (req, res) => {
 
 export const login = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
+  console.log(req.body);
+
   if (!email || !password) {
     res.status(400);
     throw new Error("field cannot be empty");
