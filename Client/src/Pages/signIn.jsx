@@ -3,7 +3,9 @@ import { Input } from "@/components/ui/input";
 import useInput from "@/Hooks/useInput";
 import { Link } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
-
+import { useState } from "react";
+import { useAuth } from "@/context/authContext";
+import axios from "axios";
 export default function SignIn() {
   const {
     value: enteredEmail,
@@ -22,19 +24,37 @@ export default function SignIn() {
     inputBlurHandler: passwordBlurHandler,
     reset: resetPassword,
   } = useInput((value) => value.trim() !== "");
+  const { login } = useAuth();
+  const [error, setError] = useState(null);
 
   let formIsValid = false;
   if (emailIsValid && passwordIsValid) formIsValid = true;
-  const submitHandler = (event) => {
+  const submitHandler = async (event) => {
     event.preventDefault();
-    if (!formIsValid) return;
+    if (!formIsValid) {
+      console.log("form is invalid");
+
+      return;
+    }
     const signInData = {
       email: enteredEmail,
       password: enteredPassword,
     };
-    console.log(signInData);
-    resetEmail("");
-    resetPassword("");
+    console.log("logging here");
+    try {
+      const response = await axios.post(
+        "http://localhost:3000/api/auth/login",
+        signInData,
+        { headers: { "Content-Type": "application/json" } }
+      );
+      console.log(response);
+
+      login(response);
+      resetEmail("");
+      resetPassword("");
+    } catch (error) {
+      setError(error);
+    }
   };
   const googleSignInHandler = () => {
     console.log("sign in with google");
