@@ -15,12 +15,12 @@ export const webSocket = (io) => {
     });
 
     socket.on("send_message", async (data) => {
-      const { senderId, receiverId, content } = data;
-      const message = new Message({ senderId, receiverId, content });
+      const { senderId, conversationId, content } = data;
+      const message = new Message({ senderId, conversationId, content });
       await message.save();
 
-      if (users.has(receiverId)) {
-        io.to(users.get(receiverId)).emit("receive_message", message);
+      if (users.has(conversationId)) {
+        io.to(users.get(conversationId)).emit("receive_message", message);
       }
     });
 

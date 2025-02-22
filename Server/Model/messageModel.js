@@ -6,7 +6,7 @@ const messageSchema = Schema(
       type: Schema.Types.ObjectId,
       require: true,
     },
-    receiverId: {
+    conversationId: {
       type: Schema.Types.ObjectId,
       require: true,
     },
