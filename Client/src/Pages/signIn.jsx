@@ -31,30 +31,24 @@ export default function SignIn() {
   if (emailIsValid && passwordIsValid) formIsValid = true;
   const submitHandler = async (event) => {
     event.preventDefault();
-    if (!formIsValid) {
-      console.log("form is invalid");
+    if (!formIsValid) return;
 
-      return;
-    }
     const signInData = {
       email: enteredEmail,
       password: enteredPassword,
     };
-    console.log("logging here");
+
     try {
       const response = await axios.post(
         "http://localhost:3000/api/auth/login",
         signInData,
         { headers: { "Content-Type": "application/json" } }
       );
-      console.log(response);
 
       login(response);
       resetEmail("");
       resetPassword("");
-    } catch (error) {
-      setError(error);
-    }
+    } catch (error) {}
   };
   const googleSignInHandler = () => {
     console.log("sign in with google");

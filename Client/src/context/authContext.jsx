@@ -9,7 +9,7 @@ export const AuthContextProvider = ({ children }) => {
 
   const checkLogin = async () => {
     try {
-      const user = await axios.get("localhost:3000/api/auth/getuser");
+      const user = await axios.get("http://localhost:3000/api/auth/getuser");
       console.log(user);
       setUser(user.data);
       setIsLoggedIn(true);
@@ -28,8 +28,8 @@ export const AuthContextProvider = ({ children }) => {
   };
 
   const logout = async () => {
-    await axios.post("localhost:3000/api/auth/logout");
-    setUser(null);
+    await axios.post("http://localhost:3000/api/auth/logout");
+    setUser({});
     setIsLoggedIn(false);
   };
 
