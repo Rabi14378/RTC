@@ -1,4 +1,5 @@
-import { User } from "../Model/userModel";
+import { User } from "../Model/userModel.js";
+import asyncHandler from "express-async-handler";
 export const Protect = asyncHandler(async (req, res, next) => {
   const token = await req.cookies.token;
   if (!token) {
