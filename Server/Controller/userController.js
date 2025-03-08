@@ -1,7 +1,7 @@
 import asyncHandler from "express-async-handler";
-import User from "../Model/userModel";
-import { Conversation } from "../Model/conversationModel";
-import { Message } from "../Model/messageModel";
+import { User } from "../Model/userModel.js";
+import { Conversation } from "../Model/conversationModel.js";
+import { Message } from "../Model/messageModel.js";
 
 export const findUsers = asyncHandler(async (req, res) => {
   if (!req.body.userQuery) {

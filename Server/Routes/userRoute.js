@@ -1,4 +1,4 @@
-import Protect from "../middleWares/authMiddleware.js";
+import { Protect } from "../middleWares/authMiddleware.js";
 import {
   addUser,
   findUsers,
