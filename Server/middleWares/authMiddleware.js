@@ -1,5 +1,6 @@
 import { User } from "../Model/userModel.js";
 import asyncHandler from "express-async-handler";
+import { verifyJwtToken } from "../Utils/jwtToken.js";
 export const Protect = asyncHandler(async (req, res, next) => {
   const token = await req.cookies.token;
   if (!token) {
