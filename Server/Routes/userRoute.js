@@ -8,7 +8,7 @@ import {
 import { Router } from "express";
 const router = Router();
 
-router.get("/finduser", Protect, findUsers);
+router.get("/findusers", Protect, findUsers);
 router.get("/adduser", Protect, addUser);
 router.get("/conversation/:conversationId", Protect, getConversation);
 router.get("/conversations", Protect, getConversations);
