@@ -6,6 +6,7 @@ import http from "http";
 import { Server } from "socket.io";
 import { errorHandler } from "./middleWares/errorHandler.js";
 import authRoute from "./Routes/authRoute.js";
+import userRoute from "./Routes/userRoute.js";
 dotenv.config();
 const app = express();
 const server = http.createServer(app);
@@ -34,6 +35,7 @@ app.use((req, res, next) => {
 });
 
 app.use("/api/auth", authRoute);
+app.use("/api/user", userRoute);
 
 app.use(errorHandler);
 const PORT = process.env.PORT || 5000;
